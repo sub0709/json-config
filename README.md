@@ -9,7 +9,7 @@ npm install @sub0709/json-config
 ### load
 ```javascript
 const Configure = require('@sub0709/json-config');
-Configure.load('test-setting.json');
+let conf = Configure.load('test-setting.json');
 ```
 
 test-setting.json sample
@@ -30,65 +30,65 @@ test-setting.json sample
 ```
 
 #### load option
+<pre>
 forceSet : true/false (default false)
 ignoreDataType : true/false (default false)
 immediateFileSave : true/false (default false)
+</pre>
 
-This is same `Configure.load('test-setting.json');`
+This is same `let conf = Configure.load('test-setting.json');`
 
 ```javascript
-Configure.load('test-setting.json', {
+let conf = Configure.load('test-setting.json', {
   forceSet : false,  
   ignoreDataType : false,
   immediateFileSave : false
 });
 ```
 
-
-
 ### get
 ```javascript
-console.log(Configure.get('dbInfo.db.host'));  // localhost
-console.log(Configure.dbInfo.db.host);  // localhost
+console.log(conf.get('dbInfo.db.host'));  // localhost
+console.log(conf.dbInfo.db.host);  // localhost
 ```
 
-## set
+### set
 ```javascript
-Configure.set('dbInfo.db.host', 'local.app.com');
-console.log(Configure.dbInfo.db.host);  // local.app.com
+conf.set('dbInfo.db.host', 'local.app.com');
+console.log(conf.dbInfo.db.host);  // local.app.com
 
-Configure.set('dbInfo.db.abc', false);  // Error: abc is not exist
+conf.set('dbInfo.db.abc', false);  // Error: abc is not exist
 ```
 
 if forceSet is true
 ```javascript
-Configure.set('dbInfo.db.abc', false);  // ok, dbInfo.db.abc maked
-console.log(Configure.dbInfo.db.abc);  // false
+conf.set('dbInfo.db.abc', false);  // ok, dbInfo.db.abc maked
+console.log(conf.dbInfo.db.abc);  // false
 ```
 
 Data type of json value have to same.
 ```javascript
-Configure.set('dbInfo.db.dbName', 999);  // Error: data type is different
+conf.set('dbInfo.db.dbName', 999);  // Error: data type is different
 ```
 
 if ignoreDataType is true
 ```javascript
-Configure.set('dbInfo.db.dbName', 999);  // ok, dbInfo.db.dbName value changed to number
-console.log(Configure.dbInfo.db.dbName);  // 999
+conf.set('dbInfo.db.dbName', 999);  // ok, dbInfo.db.dbName value changed to number
+console.log(conf.dbInfo.db.dbName);  // 999
 ```
 
-## save
+### save
 all json value save to file.
 ```javascript
-Configure.save();
+conf.save();
 ```
 
 If immediateFileSave is true, save() don't need. When called set(), immediate save to file.
 
-## store
+### store
 store() is overwrite json value.
 ```javascript
-Configure.store({aaa : 1});
-console.log(Configure.aaa);  // 1
-console.log(Configure.dbInfo);  // error, dbInfo is not exist
+conf.store({aaa : 1});
+console.log(conf.aaa);  // 1
+console.log(conf.dbInfo);  // error, dbInfo is not exist
 ```

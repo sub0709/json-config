@@ -27,11 +27,13 @@ describe('테스트 플로우', function() {
 		};
 	});
 
+	let conf1, conf2;
 	describe('디폴트 테스트', function() {
 		before(function() {
 			// 이 블록 내의 테스트들을 실행하기에 앞서 한번 실행되는 부분
-			Configure.load('test-setting.json');
-			Configure.store(JSON.stringify(defaultValue));
+			conf1 = Configure.load('test-setting.json');
+			conf1.store(JSON.stringify(defaultValue));
+			conf2 = Configure.load('test-setting2.json');
 		});
 	
 		after(function() {
@@ -48,23 +50,24 @@ describe('테스트 플로우', function() {
 	
 		// test cases
 		it('존재하는 값 확인', function () {
-			assert.equal('localhost', Configure.get('dbInfo.db.host'));
-			assert.equal(3781, Configure.get('dbInfo.db.port'));
-			assert.equal('asc', Configure.dbInfo.option.order);
+			assert.equal('localhost', conf1.get('dbInfo.db.host'));
+			assert.equal(3781, conf1.get('dbInfo.db.port'));
+			assert.equal('asc', conf1.dbInfo.option.order);
+			assert.equal(-167, conf2.china.manual_entryid);
 		});
 	
 		it('값 변경', function () {
-			Configure.set('dbInfo.db.host', 'local.app.com');
-			assert.equal('local.app.com', Configure.get('dbInfo.db.host'));
+			conf1.set('dbInfo.db.host', 'local.app.com');
+			assert.equal('local.app.com', conf1.get('dbInfo.db.host'));
 	
-			Configure.set('dbInfo.db.port', 0);
-			assert.equal(0, Configure.get('dbInfo.db.port'));
+			conf1.set('dbInfo.db.port', 0);
+			assert.equal(0, conf1.get('dbInfo.db.port'));
 		});
 	
 		it('없는 키에 저장하기', function () {
 			let ret = '';
 			try {
-				Configure.set('dbInfo.db.abc', false);
+				conf1.set('dbInfo.db.abc', false);
 			}
 			catch(e) {
 				ret = e.toString();
@@ -75,7 +78,7 @@ describe('테스트 플로우', function() {
 		it('다른 데이터 타입으로 저장하기', function () {
 			let ret = '';
 			try {
-				Configure.set('dbInfo.db.dbName', 999);
+				conf1.set('dbInfo.db.dbName', 999);
 			}
 			catch(e) {
 				ret = e.toString();
@@ -94,37 +97,37 @@ describe('테스트 플로우', function() {
 				ignoreDataType : true,	//true이면 -> set 할때 데이터 타입이 다르더라도 무시한다
 				immediateFileSave : false
 			});
-			Configure.store(JSON.stringify(defaultValue));
+			conf1.store(JSON.stringify(defaultValue));
 		});
 	
 		after(function() {
 			// 이 블록 내의 테스트들을 모두 실행한 후에 한번 실행되는 부분
-			Configure.save();
+			conf1.save();
 		});
 	
 		// test cases
 		it('존재하는 값 확인', function () {
-			assert.equal('localhost', Configure.get('dbInfo.db.host'));
-			assert.equal(3781, Configure.get('dbInfo.db.port'));
-			assert.equal('asc', Configure.dbInfo.option.order);
+			assert.equal('localhost', conf1.get('dbInfo.db.host'));
+			assert.equal(3781, conf1.get('dbInfo.db.port'));
+			assert.equal('asc', conf1.dbInfo.option.order);
 		});
 	
 		it('값 변경', function () {
-			Configure.set('dbInfo.db.host', 'local.app.com');
-			assert.equal('local.app.com', Configure.get('dbInfo.db.host'));
+			conf1.set('dbInfo.db.host', 'local.app.com');
+			assert.equal('local.app.com', conf1.get('dbInfo.db.host'));
 	
-			Configure.set('dbInfo.db.port', 0);
-			assert.equal(0, Configure.get('dbInfo.db.port'));
+			conf1.set('dbInfo.db.port', 0);
+			assert.equal(0, conf1.get('dbInfo.db.port'));
 		});
 	
 		it('없는 키에 저장하기', function () {
-			Configure.set('dbInfo.db.abc', false);
-			assert.equal(false, Configure.get('dbInfo.db.abc'));
+			conf1.set('dbInfo.db.abc', false);
+			assert.equal(false, conf1.get('dbInfo.db.abc'));
 		});
 	
 		it('다른 데이터 타입으로 저장하기', function () {
-			Configure.set('dbInfo.db.dbName', 999);
-			assert.equal(999, Configure.get('dbInfo.db.dbName'));
+			conf1.set('dbInfo.db.dbName', 999);
+			assert.equal(999, conf1.get('dbInfo.db.dbName'));
 		});
 	
 	});
