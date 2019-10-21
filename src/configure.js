@@ -1,7 +1,7 @@
 const fs = require('fs');
 const stringify = require("json-stringify-pretty-compact");
 
-let op, defaultOption = {
+let defaultOption = {
 	forceSet : false,	//true이면 -> set 할때 키가 없으면 생성한다
 	ignoreDataType : false,	//true이면 -> set 할때 데이터 타입이 다르더라도 무시한다
 	immediateFileSave : false	//true이면 -> set 할떄 파일로 바로 저장된다
@@ -12,7 +12,7 @@ function Blank(type) {
 
 function load(path, option) {
 	let configPath = '';
-	let storedConfig = null;
+	let op = null, storedConfig = null;
 	
 	function Configure(path, option) {
 		configPath = path;
